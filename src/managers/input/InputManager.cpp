@@ -88,13 +88,13 @@ void CInputManager::onMouseMoved(IPointer::SMotionEvent e) {
     const auto  DELTA = *PNOACCEL == 1 ? e.unaccel : e.delta;
 
     if (g_pSeatManager->isPointerFrameSkipped)
-        g_pPointerManager->storeMovement((uint64_t)e.timeMs, DELTA, e.unaccel);
+        g_pPointerManager->storeMovement((uint64_t)e.timeMs, e.delta, e.delta);
     else
-        g_pPointerManager->setStoredMovement((uint64_t)e.timeMs, DELTA, e.unaccel);
+        g_pPointerManager->setStoredMovement((uint64_t)e.timeMs, e.delta, e.delta);
 
-    PROTO::relativePointer->sendRelativeMotion((uint64_t)e.timeMs * 1000, DELTA, e.unaccel);
+    PROTO::relativePointer->sendRelativeMotion((uint64_t)e.timeMs * 1000, e.delta, e.delta);
 
-    g_pPointerManager->move(DELTA);
+    g_pPointerManager->move(e.delta);
 
     mouseMoveUnified(e.timeMs);
 
